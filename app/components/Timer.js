@@ -6,6 +6,15 @@ export default class Timer extends React.Component {
 		super(props)
 	}
 
+	componentDidMount() {
+		this.props.setParentState({
+			secondsRemaining: this.props.secondsRemaining,
+			minutesRemaining: this.props.minutesRemaining,
+			changedTime: this.props.changedTime,
+		})
+		this.interval = setInterval(this.tick.bind(this), 1000)
+	}
+
 	tick() {
 		if(this.props.run){
 			if(this.props.secondsRemaining == 0 && this.props.minutesRemaining > 0) {
@@ -26,15 +35,6 @@ export default class Timer extends React.Component {
 
 	}
 
-	componentDidMount() {
-		this.props.setParentState({
-			secondsRemaining: this.props.secondsRemaining,
-			minutesRemaining: this.props.minutesRemaining,
-			changedTime: this.props.changedTime,
-		})
-		this.interval = setInterval(this.tick.bind(this), 1000)
-	}
-
 	stopTick() {
 		clearInterval(this.interval)
 	}
@@ -44,8 +44,12 @@ export default class Timer extends React.Component {
 	}
 
 	render() {
-		let nicelyPaddedMinutes = this.props.minutesRemaining>9?this.props.minutesRemaining:'0'+this.props.minutesRemaining
-		let nicelyPaddedSeconds = this.props.secondsRemaining>9?this.props.secondsRemaining:'0'+this.props.secondsRemaining
+		let nicelyPaddedMinutes = this.props.minutesRemaining>9 ? 
+								  this.props.minutesRemaining : 
+								  '0'+this.props.minutesRemaining
+		let nicelyPaddedSeconds = this.props.secondsRemaining>9 ? 
+								  this.props.secondsRemaining : 
+								  '0'+this.props.secondsRemaining
 		return (
 			<div>
 				Remaining Time: {nicelyPaddedMinutes}:{nicelyPaddedSeconds}
